@@ -6,7 +6,7 @@ import { isTypeScriptProject } from "../utils/detect.js"
 import { fetchFile } from "../utils/fetch.js"
 
 // You can set this via environment variable: REGISTRY_URL=https://your-domain.com
-const BASE_URL = process.env.REGISTRY_URL || "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/packages/registry"
+const BASE_URL = process.env.REGISTRY_URL || "https://raw.githubusercontent.com/Subhadipjana95/subhadip-ui/main/packages/registry"
 
 export async function addComponent(component: string) {
   try {

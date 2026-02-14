@@ -1,19 +1,22 @@
 {
   "name": "subhadip-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool to add UI components to your project",
-  "author": "Your Name",
+  "author": "Subhadip Jana <codesubhadip95@gmail.com>",
   "license": "MIT",
   "keywords": [
     "ui",
     "components",
     "cli",
     "react",
-    "component-library"
+    "component-library",
+    "shadcn",
+    "typescript",
+    "javascript"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/YOUR_REPO"
+    "url": "https://github.com/Subhadipjana95/subhadip-ui"
   },
   "bin": {
     "subhadip-ui": "dist/index.js"
