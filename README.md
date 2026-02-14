@@ -26,7 +26,7 @@ Install the CLI tool globally or use it with `npx`:
 npm install -g subhadip-ui
 
 # Or use with npx (no installation required)
-npx subhadip-ui add button
+npx subhadip-ui@latest add button
 ```
 
 ### Usage
