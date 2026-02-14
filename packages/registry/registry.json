@@ -1,0 +1,9 @@
+{
+  "button": {
+    "files": [
+      {
+        "path": "components/button/button.tsx"
+      }
+    ]
+  }
+}
