@@ -125,8 +125,8 @@ component-library/
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/component-library.git
-cd component-library
+git clone https://github.com/Subhadipjana95/subhadip-ui.git
+cd subhadip-ui
 
 # Install dependencies
 pnpm install
@@ -197,7 +197,7 @@ The component registry needs to be hosted and accessible via HTTP. Options:
 
 ```typescript
 // packages/cli/src/commands/add.ts
-const BASE_URL = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/packages/registry"
+const BASE_URL = "https://raw.githubusercontent.com/Subhadipjana95/subhadip-ui/main/packages/registry"
 ```
 
 #### Vercel/Netlify
@@ -209,7 +209,7 @@ Deploy the registry as a static site and update the `BASE_URL` accordingly.
 Set the `REGISTRY_URL` environment variable:
 
 ```bash
-REGISTRY_URL=https://your-domain.com/registry subhadip-ui add button
+REGISTRY_URL=https://subhadip-ui.com/registry subhadip-ui add button
 ```
 
 ### Publishing to npm
@@ -227,7 +227,7 @@ npm publish
 - `REGISTRY_URL` - Override the default registry URL
 
 ```bash
-REGISTRY_URL=https://custom-url.com/registry subhadip-ui add button
+REGISTRY_URL=https://subhadip-ui.com/registry subhadip-ui add button
 ```
 
 ## 📝 How It Works
@@ -270,8 +270,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Subhadip Jana**
 
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
-- Email: your.email@example.com
+- GitHub: [@Subhadipjana95](https://github.com/Subhadipjana95)
+- Email: [codesubhadip95@gmail.com]
 
 ---
 
