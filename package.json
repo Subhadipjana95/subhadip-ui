@@ -1,0 +1,12 @@
+{
+  "name": "subhadip-ui",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "devDependencies": {
+    "turbo": "^1.13.4"
+  }
+}

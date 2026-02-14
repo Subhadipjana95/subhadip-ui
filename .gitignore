@@ -1,0 +1,68 @@
+# ==============================
+# Node & Package Managers
+# ==============================
+
+node_modules/
+.pnpm-store/
+.pnp/
+.pnp.js
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==============================
+# Build Outputs
+# ==============================
+
+dist/
+build/
+.next/
+out/
+coverage/
+
+# Turborepo
+.turbo/
+
+# ==============================
+# Environment Variables
+# ==============================
+
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==============================
+# TypeScript
+# ==============================
+
+*.tsbuildinfo
+
+# ==============================
+# OS & Editor
+# ==============================
+
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
+
+# ==============================
+# Temporary Files
+# ==============================
+
+*.log
+*.tmp
+*.swp
+
+# ==============================
+# Registry Deployment Ignore (Optional)
+# ==============================
+
+# If hosting separately, ignore built registry
+registry-dist/
