@@ -1,13 +1,5 @@
 import { execa } from "execa"
-import fs from "fs-extra"
-import path from "path"
 import chalk from "chalk"
-import ora from "ora"
-import { getPackageManager } from "./detect.js"
-
-/**
- * Install npm packages
- */
 
 /**
  * Initialize ShadCN project
