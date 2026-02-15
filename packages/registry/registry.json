@@ -4,6 +4,30 @@
       {
         "path": "components/button/button.tsx"
       }
-    ]
+    ],
+    "dependencies": [],
+    "devDependencies": [],
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0",
+      "tailwindcss": "^3.0.0",
+      "class-variance-authority": "^0.7.0",
+      "clsx": "^2.0.0",
+      "tailwind-merge": "^2.0.0"
+    },
+    "registryDependencies": ["utils"]
+  },
+  "utils": {
+    "files": [
+      {
+        "path": "lib/utils.tsx"
+      }
+    ],
+    "dependencies": [],
+    "devDependencies": [],
+    "peerDependencies": {
+      "clsx": "^2.0.0",
+      "tailwind-merge": "^2.0.0"
+    },
+    "registryDependencies": []
   }
 }
