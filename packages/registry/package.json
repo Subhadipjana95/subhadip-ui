@@ -1,0 +1,10 @@
+{
+  "name": "@froniq-ui/registry",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "shadcn build"
+  },
+  "devDependencies": {
+    "shadcn": "latest"
+  }
+}

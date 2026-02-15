@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "title": "Button",
+  "description": "Displays a button or a component that looks like a button.",
+  "dependencies": [
+    "@radix-ui/react-slot"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/button/button.tsx",
+      "content": "import * as React from \"react\"\r\n\r\nexport interface ButtonProps\r\n  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}\r\n\r\nexport const Button = React.forwardRef<\r\n  HTMLButtonElement,\r\n  ButtonProps\r\n>(({ className = \"\", ...props }, ref) => {\r\n  return (\r\n    <button\r\n      ref={ref}\r\n      className={`px-4 py-2 rounded-md bg-primary text-white ${className}`}\r\n      {...props}\r\n    />\r\n  )\r\n})\r\n\r\nButton.displayName = \"Button\"",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -48,4 +48,8 @@ export async function ensureShadcnEnvironment(): Promise<void> {
       await initShadcn()
     }
   }
+
+  // Ensure registry alias is configured for future use
+  const { configureRegistryAlias } = await import("./registry.js")
+  await configureRegistryAlias()
 }
