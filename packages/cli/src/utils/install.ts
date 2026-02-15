@@ -27,15 +27,25 @@ export async function initShadcn(): Promise<void> {
  */
 export async function ensureShadcnEnvironment(): Promise<void> {
   const { hasShadcnConfig } = await import("./detect.js")
-  const { checkAndSetupPaths } = await import("./setup.js")
+  const { configurePaths } = await import("./setup.js")
   
   // First ensure project paths are configured correctly (tsconfig paths, vite alias)
-  await checkAndSetupPaths()
+  await configurePaths(false)
   
   if (!hasShadcnConfig()) {
     console.log(chalk.yellow("⚠ shadcn-ui configuration (components.json) not found."))
     console.log(chalk.blue("Froniq UI requires a shadcn-ui compatible environment."))
     
-    await initShadcn()
+    try {
+      await initShadcn()
+    } catch (e) {
+      console.log(chalk.yellow("\n⚠ Initialization failed. This is often due to missing alias configuration."))
+      
+      // Force configuration check and setup
+      await configurePaths(true)
+      
+      console.log(chalk.blue("Retrying shadcn initialization..."))
+      await initShadcn()
+    }
   }
 }

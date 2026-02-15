@@ -5,12 +5,11 @@ import prompts from "prompts"
 import { isTypeScriptProject } from "./detect.js"
 import { installPackages } from "./pkg.js"
 
-export async function checkAndSetupPaths(): Promise<void> {
+export async function configurePaths(force: boolean = false): Promise<void> {
   // Only proceed if it's a TypeScript project
   if (!isTypeScriptProject()) return
 
   const tsConfigPath = path.join(process.cwd(), "tsconfig.json")
-  const viteConfigPath = path.join(process.cwd(), "vite.config.ts")
   
   // 1. Check tsconfig.json
   if (fs.existsSync(tsConfigPath)) {
@@ -20,14 +19,15 @@ export async function checkAndSetupPaths(): Promise<void> {
       // Check if paths are configured
       const hasPaths = tsConfigContent.includes('"paths"') && tsConfigContent.includes("@/*")
       
-      if (!hasPaths) {
-        console.log(chalk.yellow("\n⚠ TypeScript path aliases (@/*) are missing."))
-        console.log(chalk.gray("These are required for shadcn-ui (and Froniq UI) to work correctly."))
+      if (!hasPaths || force) {
+        if (!force) {
+          console.log(chalk.yellow("\n⚠ TypeScript path aliases (@/*) seem missing."))
+        }
         
         const response = await prompts({
           type: "confirm",
           name: "fix",
-          message: "Would you like me to configure them automatically?",
+          message: "Would you like me to configure tsconfig paths automatically?",
           initial: true,
         })
         
@@ -63,6 +63,8 @@ export async function checkAndSetupPaths(): Promise<void> {
   }
 
   // 2. Check vite.config.ts (If it exists)
+  const viteConfigPath = path.join(process.cwd(), "vite.config.ts")
+
   if (fs.existsSync(viteConfigPath)) {
     try {
       const viteContent = await fs.readFile(viteConfigPath, "utf-8")
@@ -70,8 +72,10 @@ export async function checkAndSetupPaths(): Promise<void> {
       // Check if aliases are configured
       const hasAlias = viteContent.includes("resolve") && viteContent.includes("alias")
       
-      if (!hasAlias) {
-        console.log(chalk.yellow("\n⚠ Vite path aliases are missing."))
+      if (!hasAlias || force) {
+        if (!force) {
+          console.log(chalk.yellow("\n⚠ Vite path aliases seem missing."))
+        }
         
         const response = await prompts({
           type: "confirm",
@@ -92,29 +96,24 @@ export async function checkAndSetupPaths(): Promise<void> {
             }
             
             // Inject alias
-            if (newContent.includes("plugins: [")) {
-                newContent = newContent.replace(
-                  "plugins: [",
-                  `resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+            if (!newContent.includes("resolve: {")) {
+                if (newContent.includes("plugins: [")) {
+                    newContent = newContent.replace(
+                    "plugins: [",
+                    `resolve: {
+        alias: {
+        "@": path.resolve(__dirname, "./src"),
+        },
     },
-  },
-  plugins: [`
-                )
-                
-                await fs.writeFile(viteConfigPath, newContent)
-                console.log(chalk.green("✔ Updated vite.config.ts"))
-            } else {
-                console.log(chalk.yellow("⚠ Could not automatically determine where to inject alias."))
-                console.log(chalk.blue("Please manually add this to your defineConfig object:"))
-                console.log(chalk.gray(`
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-                `))
+    plugins: [`
+                    )
+                    
+                    await fs.writeFile(viteConfigPath, newContent)
+                    console.log(chalk.green("✔ Updated vite.config.ts"))
+                }
+            } else if (force) {
+                 // If forced but struct likely exists, we warn
+                 console.log(chalk.yellow("⚠ 'resolve' block already exists. Skipping manual injection to avoid corruption."))
             }
         }
       }
