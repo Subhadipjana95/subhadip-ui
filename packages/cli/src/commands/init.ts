@@ -1,21 +1,18 @@
 import chalk from "chalk"
-import { initShadcn } from "../utils/install.js"
-import { configureRegistryAlias } from "../utils/registry.js"
+import { ensureShadcnEnvironment } from "../utils/install.js"
 
 export async function initProject() {
   console.log(chalk.bold.blue("🎨 Welcome to Froniq UI!\n"))
 
   try {
-    await initShadcn()
-    await configureRegistryAlias()
+    await ensureShadcnEnvironment()
     
     console.log(chalk.green("\n✔ Setup complete! You can now add components."))
     console.log(chalk.blue("  froniq-ui add button"))
-    console.log(chalk.blue("  shardcn add @froniq/button\n"))
+    console.log(chalk.blue("  npx shadcn@latest add @froniq/button\n"))
     
-    console.log(chalk.green("\n✔ Configured @froniq registry alias in components.json"))
   } catch (error) {
-    // Error is already logged in initShadcn
+    // ensureShadcnEnvironment handles most errors, but if it throws, we exit
     process.exit(1)
   }
 }
