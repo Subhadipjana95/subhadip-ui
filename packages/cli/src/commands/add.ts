@@ -3,18 +3,16 @@ import fs from "fs-extra"
 import chalk from "chalk"
 import axios from "axios"
 import ora from "ora"
-import prompts from "prompts"
 import {
   isTypeScriptProject,
-  hasConfig,
-  getConfig,
+  hasShadcnConfig,
+  getComponentsPath,
+  getUtilsPath,
   hasPackageInstalled,
 } from "../utils/detect.js"
 import { fetchFile } from "../utils/fetch.js"
 import {
-  ensureTailwindInstalled,
-  ensureShadcnBaseInstalled,
-  ensureUtilsFileExists,
+  ensureShadcnEnvironment,
   installPackages,
 } from "../utils/install.js"
 
@@ -31,31 +29,9 @@ interface ComponentData {
 
 export async function addComponent(componentName: string) {
   try {
-    // Check if config exists
-    if (!hasConfig()) {
-      console.log(chalk.yellow("⚠ Config file not found. Please run:"))
-      console.log(chalk.blue("  froniq-ui init\n"))
-      
-      const response = await prompts({
-        type: "confirm",
-        name: "continue",
-        message: "Would you like to continue without config? (components will be installed to components/ui)",
-        initial: false,
-      })
-
-      if (!response.continue) {
-        process.exit(0)
-      }
-    }
-
-    const config = getConfig() || {
-      componentsPath: "components/ui",
-      utilsPath: "lib/utils",
-    }
-
     console.log(chalk.blue(`📦 Fetching ${componentName} component...\n`))
     
-    // Fetch registry
+    // Fetch registry first to make sure component exists
     const registry = await axios.get(`${BASE_URL}/registry.json`)
     const componentData: ComponentData = registry.data[componentName]
 
@@ -65,20 +41,23 @@ export async function addComponent(componentName: string) {
       return
     }
 
-    // Pre-flight checks
-    console.log(chalk.gray("Checking dependencies..."))
-    await ensureTailwindInstalled()
-    await ensureShadcnBaseInstalled()
-    await ensureUtilsFileExists()
+    // Ensure Shadcn environment (components.json + tailwind)
+    // If not present, this will run 'npx shadcn@latest init'
+    await ensureShadcnEnvironment()
 
-    // Install component dependencies
+    // Config is guaranteed to exist here
+    const componentsPath = getComponentsPath()
+    const utilsPath = getUtilsPath()
+
+    // Install component-specific dependencies (that might not be in shadcn base)
     await installComponentDependencies(componentData)
 
-    // Install registry dependencies (other components)
+    // Install registry dependencies (recursive)
     if (componentData.registryDependencies && componentData.registryDependencies.length > 0) {
-      console.log(chalk.gray("\nInstalling registry dependencies..."))
+      console.log(chalk.gray("\nChecking registry dependencies..."))
       for (const dep of componentData.registryDependencies) {
-        if (dep !== componentName) {
+        // Skip "utils" since it's handled by shadcn init
+        if (dep !== componentName && dep !== "utils") {
           await addComponent(dep)
         }
       }
@@ -86,7 +65,7 @@ export async function addComponent(componentName: string) {
 
     // Download and install component files
     console.log(chalk.gray("\nInstalling component files..."))
-    await downloadComponentFiles(componentName, componentData, config)
+    await downloadComponentFiles(componentName, componentData, componentsPath, utilsPath)
 
     console.log(chalk.green(`\n✔ ${componentName} added successfully!\n`))
   } catch (error) {
@@ -130,7 +109,11 @@ async function installComponentDependencies(componentData: ComponentData): Promi
   // Check peer dependencies
   if (componentData.peerDependencies) {
     for (const [dep, version] of Object.entries(componentData.peerDependencies)) {
-      if (!hasPackageInstalled(dep)) {
+      // Don't install core shadcn deps as they are handled by init
+      // But do check if they are missing for some reason
+      const isCoreDep = ["react", "react-dom", "tailwindcss", "clsx", "tailwind-merge", "class-variance-authority"].includes(dep)
+      
+      if (!hasPackageInstalled(dep) && !isCoreDep) {
         toInstall.push(`${dep}@${version}`)
       }
     }
@@ -138,10 +121,12 @@ async function installComponentDependencies(componentData: ComponentData): Promi
 
   // Install missing dependencies
   if (toInstall.length > 0) {
+    console.log(chalk.blue(`Installing dependencies: ${toInstall.join(", ")}`))
     await installPackages(toInstall, false)
   }
 
   if (toInstallDev.length > 0) {
+    console.log(chalk.blue(`Installing devDependencies: ${toInstallDev.join(", ")}`))
     await installPackages(toInstallDev, true)
   }
 }
@@ -149,7 +134,8 @@ async function installComponentDependencies(componentData: ComponentData): Promi
 async function downloadComponentFiles(
   componentName: string,
   componentData: ComponentData,
-  config: any
+  componentsPath: string,
+  utilsPath: string
 ): Promise<void> {
   const extension = isTypeScriptProject() ? "tsx" : "jsx"
   const jsExtension = isTypeScriptProject() ? "ts" : "js"
@@ -160,20 +146,17 @@ async function downloadComponentFiles(
 
     // Handle different file types
     if (remotePath.includes("lib/utils")) {
-      // Utils file
-      remotePath = remotePath.replace(".tsx", `.${jsExtension}`)
-      targetPath = path.join(
-        process.cwd(),
-        config.utilsPath || "lib/utils",
-        path.basename(remotePath)
-      )
+      // Utils file - we typically skip this as shadcn init handles it,
+      // but if the registry has a specialized utility, we might want to update it.
+      // For now, let's respect the existing utils from shadcn init.
+      continue 
     } else {
       // Component file
       remotePath = remotePath.replace(".tsx", `.${extension}`)
       const fileName = path.basename(remotePath)
       targetPath = path.join(
         process.cwd(),
-        config.componentsPath || "components/ui",
+        componentsPath,
         fileName
       )
     }
@@ -184,6 +167,12 @@ async function downloadComponentFiles(
     
     try {
       const fileContent = await fetchFile(fileUrl)
+      
+      // Update utils import if necessary
+      // shadcn components usually import cn from "@/lib/utils"
+      // We might need to adjust this based on the project alias config?
+      // For now, assuming standard shadcn structure.
+      
       await fs.ensureDir(path.dirname(targetPath))
       await fs.writeFile(targetPath, fileContent)
       

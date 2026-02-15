@@ -70,17 +70,17 @@ export function getPackageManager(): "npm" | "pnpm" | "yarn" | "bun" {
 }
 
 /**
- * Check if froniq-ui config file exists
+ * Check if shadcn components.json exists
  */
-export function hasConfig(): boolean {
-  return fs.existsSync(path.join(process.cwd(), "froniq-ui.json"))
+export function hasShadcnConfig(): boolean {
+  return fs.existsSync(path.join(process.cwd(), "components.json"))
 }
 
 /**
- * Get the config file contents
+ * Get the shadcn config
  */
-export function getConfig(): any {
-  const configPath = path.join(process.cwd(), "froniq-ui.json")
+export function getShadcnConfig(): any {
+  const configPath = path.join(process.cwd(), "components.json")
   
   if (!fs.existsSync(configPath)) {
     return null
@@ -94,14 +94,40 @@ export function getConfig(): any {
 }
 
 /**
- * Check if utils file exists
+ * Resolve utility file path from config
+ */
+export function getUtilsPath(): string {
+  const config = getShadcnConfig()
+  
+  if (config?.aliases?.utils) {
+    // Convert alias to path (e.g. "@/lib/utils" -> "lib/utils")
+    return config.aliases.utils.replace(/^@\//, "")
+  }
+  
+  return "lib/utils"
+}
+
+/**
+ * Resolve components directory path from config
+ */
+export function getComponentsPath(): string {
+  const config = getShadcnConfig()
+  
+  if (config?.aliases?.components) {
+    return config.aliases.components.replace(/^@\//, "")
+  }
+  
+  return "components"
+}
+
+/**
+ * Check if utils file exists based on shadcn config
  */
 export function hasUtilsFile(): boolean {
-  const config = getConfig()
-  const utilsPath = config?.paths?.utils || "lib/utils"
-  const extension = isTypeScriptProject() ? "ts" : "js"
+  const utilsPath = getUtilsPath()
+  const extensions = ["ts", "tsx", "js", "jsx"]
   
-  return fs.existsSync(
-    path.join(process.cwd(), `${utilsPath}.${extension}`)
+  return extensions.some(ext => 
+    fs.existsSync(path.join(process.cwd(), `${utilsPath}.${ext}`))
   )
 }
