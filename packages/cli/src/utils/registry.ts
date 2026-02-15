@@ -13,7 +13,7 @@ export async function configureRegistryAlias(): Promise<void> {
     const config = await fs.readJSON(configPath)
     
     // Check if registry is already configured
-    if (config.registries && config.registries["froniq"]) {
+    if (config.registries && config.registries["@froniq"]) {
       return
     }
 
@@ -22,7 +22,7 @@ export async function configureRegistryAlias(): Promise<void> {
     }
     
     // Add the registry alias
-    config.registries["froniq"] = "https://raw.githubusercontent.com/Subhadipjana95/subhadip-ui/main/packages/registry/public/r"
+    config.registries["@froniq"] = "https://raw.githubusercontent.com/Subhadipjana95/subhadip-ui/main/packages/registry/public/r"
     
     await fs.writeJSON(configPath, config, { spaces: 2 })
     console.log(chalk.green("✔ Configured '@froniq' registry alias in components.json"))
