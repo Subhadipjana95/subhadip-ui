@@ -3,7 +3,7 @@ import path from "path"
 import chalk from "chalk"
 import prompts from "prompts"
 import { isTypeScriptProject } from "./detect.js"
-import { installPackages } from "./install.js"
+import { installPackages } from "./pkg.js"
 
 export async function checkAndSetupPaths(): Promise<void> {
   // Only proceed if it's a TypeScript project

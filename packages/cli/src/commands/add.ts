@@ -11,10 +11,8 @@ import {
   hasPackageInstalled,
 } from "../utils/detect.js"
 import { fetchFile } from "../utils/fetch.js"
-import {
-  ensureShadcnEnvironment,
-  installPackages,
-} from "../utils/install.js"
+import { ensureShadcnEnvironment } from "../utils/install.js"
+import { installPackages } from "../utils/pkg.js"
 
 // You can set this via environment variable: REGISTRY_URL=https://your-domain.com
 const BASE_URL = process.env.REGISTRY_URL || "https://raw.githubusercontent.com/Subhadipjana95/subhadip-ui/main/packages/registry"
