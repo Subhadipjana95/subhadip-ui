@@ -1,5 +1,5 @@
 {
-  "name": "subhadip-ui",
+  "name": "froniq-ui",
   "version": "1.0.1",
   "description": "CLI tool to add UI components to your project",
   "author": "Subhadip Jana <codesubhadip95@gmail.com>",
@@ -19,7 +19,7 @@
     "url": "https://github.com/Subhadipjana95/subhadip-ui"
   },
   "bin": {
-    "subhadip-ui": "dist/index.js"
+    "froniq-ui": "dist/index.js"
   },
   "type": "module",
   "files": [

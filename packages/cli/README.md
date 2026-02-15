@@ -1,23 +1,23 @@
-# Subhadip UI CLI
+# Froniq UI CLI
 
 A CLI tool to add components from your component library to any project.
 
 ## Installation
 
 ```bash
-npm install -g subhadip-ui
+npm install -g froniq-ui
 # or
-pnpm add -g subhadip-ui
+pnpm add -g froniq-ui
 ```
 
 ## Usage
 
 ```bash
 # Add a component to your project
-subhadip-ui add button
+froniq-ui add button
 
 # Add a card component
-subhadip-ui add card
+froniq-ui add card
 ```
 
 ## Configuration
@@ -26,7 +26,7 @@ By default, the CLI fetches components from the GitHub repository. You can overr
 
 ```bash
 # Use a custom registry URL
-REGISTRY_URL=https://your-domain.com/registry subhadip-ui add button
+REGISTRY_URL=https://your-domain.com/registry froniq-ui add button
 ```
 
 ## How It Works

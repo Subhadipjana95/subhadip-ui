@@ -1,13 +1,13 @@
-# Subhadip UI
+# Froniq UI
 
 A modern, lightweight component library for React applications. Install only the components you need, directly into your project.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://img.shields.io/npm/v/subhadip-ui.svg)](https://www.npmjs.com/package/subhadip-ui)
+[![npm version](https://img.shields.io/npm/v/froniq-ui.svg)](https://www.npmjs.com/package/froniq-ui)
 
 ## 🎯 Philosophy
 
-Unlike traditional component libraries that bloat your `node_modules`, Subhadip UI follows the **shadcn/ui** approach:
+Unlike traditional component libraries that bloat your `node_modules`, Froniq UI follows the **shadcn/ui** approach:
 
 - ✅ **Copy, don't install** - Components are copied directly into your project
 - ✅ **Full ownership** - Modify components to fit your exact needs
@@ -23,10 +23,10 @@ Install the CLI tool globally or use it with `npx`:
 
 ```bash
 # Install globally
-npm install -g subhadip-ui
+npm install -g froniq-ui
 
 # Or use with npx (no installation required)
-npx subhadip-ui@latest add button
+npx froniq-ui@latest add button
 ```
 
 ### Usage
@@ -35,11 +35,11 @@ Add components to your project with a single command:
 
 ```bash
 # Add a button component
-subhadip-ui add button
+froniq-ui add button
 
 # Add multiple components
-subhadip-ui add card
-subhadip-ui add input
+froniq-ui add card
+froniq-ui add input
 ```
 
 The CLI will:
@@ -139,7 +139,7 @@ pnpm build
 pnpm link --global
 
 # Test the CLI
-subhadip-ui add button
+froniq-ui add button
 ```
 
 ### Adding New Components
@@ -168,7 +168,7 @@ mkdir packages/registry/components/your-component
 3. **Test locally**:
 
 ```bash
-subhadip-ui add your-component
+froniq-ui add your-component
 ```
 
 4. **Commit and deploy** the registry
@@ -209,7 +209,7 @@ Deploy the registry as a static site and update the `BASE_URL` accordingly.
 Set the `REGISTRY_URL` environment variable:
 
 ```bash
-REGISTRY_URL=https://subhadip-ui.com/registry subhadip-ui add button
+REGISTRY_URL=https://froniq-ui.com/registry froniq-ui add button
 ```
 
 ### Publishing to npm
@@ -227,7 +227,7 @@ npm publish
 - `REGISTRY_URL` - Override the default registry URL
 
 ```bash
-REGISTRY_URL=https://subhadip-ui.com/registry subhadip-ui add button
+REGISTRY_URL=https://froniq-ui.com/registry froniq-ui add button
 ```
 
 ## 📝 How It Works

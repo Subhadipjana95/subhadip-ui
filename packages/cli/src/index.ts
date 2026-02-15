@@ -6,7 +6,7 @@ import { addComponent } from "./commands/add.js"
 const program = new Command()
 
 program
-  .name("subhadip-ui")
+  .name("froniq-ui")
   .description("Add components to your project")
   .version("1.0.0")
 
