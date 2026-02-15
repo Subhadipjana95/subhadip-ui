@@ -72,6 +72,10 @@ export async function initShadcn(): Promise<void> {
  */
 export async function ensureShadcnEnvironment(): Promise<void> {
   const { hasShadcnConfig } = await import("./detect.js")
+  const { checkAndSetupPaths } = await import("./setup.js")
+  
+  // First ensure project paths are configured correctly (tsconfig paths, vite alias)
+  await checkAndSetupPaths()
   
   if (!hasShadcnConfig()) {
     console.log(chalk.yellow("⚠ shadcn-ui configuration (components.json) not found."))

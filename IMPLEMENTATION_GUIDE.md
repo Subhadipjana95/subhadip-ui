@@ -8,6 +8,9 @@ Froniq UI now tightly integrates with **shadcn-ui** to provide a seamless develo
 
 1. **✅ Automatic shadcn Environment Setup**
    - If `shadcn-ui` is not initialized (missing `components.json`), Froniq UI automatically runs `npx shadcn@latest init`.
+   - Before initialization, it **automatically checks and fixes** environment issues:
+     - Adds missing TypeScript path aliases (`@/*`) to `tsconfig.json`.
+     - Configures Vite path aliases (`resolve.alias`) in `vite.config.ts`.
    - This ensures a standard, robust foundation (Tailwind CSS, utils, project structure).
 
 2. **✅ shadcn Configuration Support**
